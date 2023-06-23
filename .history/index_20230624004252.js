@@ -35,17 +35,10 @@ client.on("messageCreate", async (message) => {
 
   let prevMessages = await message.channel.messages.fetch({ limit: 15 });
   prevMessages.reverse();
-
+  
   prevMessages.forEach((msg) => {
-    if (!message.content.startsWith("!")) return;
-    if (msg.author.id !== client.user.id && message.author.bot) return;
-    if (msg.author.id !== message.author.id) return;
-
-    conversationLog.push({
-      role: "user",
-      content: msg.content,
-    });
-  });
+    if()
+  })
 
   conversationLog.push({
     role: "user",

@@ -19,47 +19,25 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-client.on("messageCreate", async (message) => {
+client.on("messageCreate", (message) => {
   if (message.author.bot) return;
   if (message.channel.id !== process.env.CHANNEL_ID) return;
-  if (!message.content.startsWith("!")) return;
+  if (message.content.startsWith("!")) return;
 
   let conversationLog = [
     {
       role: "system",
-      content: "You are a friendly bot",
+      contnet: "You are a friendly bot",
     },
   ];
-
-  await message.channel.sendTyping();
-
-  let prevMessages = await message.channel.messages.fetch({ limit: 15 });
-  prevMessages.reverse();
-
-  prevMessages.forEach((msg) => {
-    if (!message.content.startsWith("!")) return;
-    if (msg.author.id !== client.user.id && message.author.bot) return;
-    if (msg.author.id !== message.author.id) return;
-
-    conversationLog.push({
-      role: "user",
-      content: msg.content,
-    });
-  });
-
   conversationLog.push({
     role: "user",
     content: message.content,
   });
-
+  
   await message.channel.sendTyping();
-
-  const result = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: conversationLog,
-  });
-
-  message.reply(result.data.choices[0].message);
+  
+  const result = await open
 });
 
 client.login(process.env.TOKEN);
